@@ -5,7 +5,7 @@ export interface IRouterHistory {
 
 export class HashHistory implements IRouterHistory {
   getDefaultValue() {
-    return location.hash.replace('#/', '');
+    return location.hash.replace('#/', '/');
   }
 
   listen(fn: (path: string) => void): () => void {

@@ -5,7 +5,7 @@ export class HashHistory implements Router.IRouterHistory {
   }
 
   listen(fn: (path: string) => void): () => void {
-    const callback = () => fn(location.hash.replace('#/', ''));
+    const callback = () => fn(location.hash.replace('#/', '/'));
     window.addEventListener('hashchange', callback);
     return () => {
       window.removeEventListener('hashchange', callback);

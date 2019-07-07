@@ -15,8 +15,8 @@ export interface IRouteProps extends IInnerRouteProps {
 export declare function useRouter(): IRouter;
 export declare const RouteContext: React.Context<{}>;
 export declare function useRouteParams(): {};
-export declare function Route({ path, onEnter, onExit, isExact, children }: IRouteProps): React.ReactElement<any, string | ((props: any) => React.ReactElement<any, string | any | (new (props: any) => React.Component<any, any, any>)>) | (new (props: any) => React.Component<any, any, any>)>;
+export declare function Route({ path, onEnter, onExit, isExact, children }: IRouteProps): JSX.Element;
 export declare function BrowserRouter({ router, children }: {
     router: IRouter;
     children: React.ReactNode;
-}): JSX.Element;
+}): React.ReactElement<any, string | ((props: any) => React.ReactElement<any, string | any | (new (props: any) => React.Component<any, any, any>)>) | (new (props: any) => React.Component<any, any, any>)>;

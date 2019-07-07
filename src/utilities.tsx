@@ -1,12 +1,11 @@
 import { computed, observable } from 'mobx';
-import { IRouter } from './irouter';
 
 export interface IRouteDef {
-  params: {};
   paramsList: string[];
   regex: RegExp;
   dataParams?: {};
-  isActive?: boolean;
+
+  getParams(path: string): any;
 }
 
 export function checkRoute(
@@ -27,14 +26,12 @@ export function checkRoute(
 }
 
 class RouteDef implements IRouteDef {
-  @observable.ref router: IRouter = null;
   @observable path: string = '';
   @observable isExact: boolean = false;
 
   prevParams: {} = {};
 
-  constructor(router: IRouter, path: string, isExact: boolean = false) {
-    this.router = router;
+  constructor(path: string, isExact: boolean = false) {
     this.path = path;
     this.isExact = isExact;
 
@@ -58,13 +55,8 @@ class RouteDef implements IRouteDef {
     return params;
   }
 
-  @computed get isActive() {
-    this.regex.lastIndex = 0;
-    return this.regex.test(this.router.path);
-  }
-
-  @computed get params() {
-    const newParams = checkRoute(this.router.path, this);
+  getParams(routerPath: string) {
+    const newParams = checkRoute(routerPath, this);
     if (!newParams || !this.prevParams) {
       return this.prevParams = newParams;
     }
@@ -80,7 +72,6 @@ class RouteDef implements IRouteDef {
 }
 
 export function parsePath(
-  router: IRouter,
   path: string,
   isExact: boolean = false): IRouteDef {
   const params = [];
@@ -92,5 +83,5 @@ export function parsePath(
 
   newPath = `^${newPath}${isExact ? '$' : '.*'}`;
 
-  return new RouteDef(router, path, isExact);
+  return new RouteDef(path, isExact);
 }

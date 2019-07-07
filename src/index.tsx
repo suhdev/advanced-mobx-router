@@ -52,7 +52,7 @@ export function Route({ path, onEnter, onExit, isExact, children }: IRouteProps)
   const [routeDef] = React.useState(() => parsePath(router, path, isExact));
 
   return useObserver(
-    () => routeDef.params ? <InnerRoute
+    () => routeDef.isActive ? <InnerRoute
       onExit={onExit}
       params={routeDef.params}
       onEnter={onEnter}>

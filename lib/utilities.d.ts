@@ -4,6 +4,7 @@ export interface IRouteDef {
     paramsList: string[];
     regex: RegExp;
     dataParams?: {};
+    isActive?: boolean;
 }
 export declare function checkRoute(path: string, { regex, paramsList }: IRouteDef): {
     [idx: string]: string;

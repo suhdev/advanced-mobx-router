@@ -6,6 +6,7 @@ export interface IRouteDef {
   paramsList: string[];
   regex: RegExp;
   dataParams?: {};
+  isActive?: boolean;
 }
 
 export function checkRoute(
@@ -29,6 +30,7 @@ class RouteDef implements IRouteDef {
   @observable.ref router: IRouter = null;
   @observable path: string = '';
   @observable isExact: boolean = false;
+
   prevParams: {} = {};
 
   constructor(router: IRouter, path: string, isExact: boolean = false) {
@@ -44,7 +46,7 @@ class RouteDef implements IRouteDef {
     });
 
     newPath = `^${newPath}${this.isExact ? '$' : '.*'}`;
-    return new RegExp(newPath);
+    return new RegExp(newPath, 'ig');
   }
 
   @computed get paramsList() {
@@ -54,6 +56,11 @@ class RouteDef implements IRouteDef {
       return '([^/]+)';
     });
     return params;
+  }
+
+  @computed get isActive() {
+    this.regex.lastIndex = 0;
+    return this.regex.test(this.router.path);
   }
 
   @computed get params() {

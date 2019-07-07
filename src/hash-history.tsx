@@ -1,5 +1,9 @@
+export interface IRouterHistory {
+  listen(fn: (path: string) => void): () => void;
+  getDefaultValue(): string;
+}
 
-export class HashHistory implements Router.IRouterHistory {
+export class HashHistory implements IRouterHistory {
   getDefaultValue() {
     return location.hash.replace('#/', '');
   }

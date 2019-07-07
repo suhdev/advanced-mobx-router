@@ -1,8 +1,16 @@
-import { computed, observable, reaction } from 'mobx';
+import { computed, observable } from 'mobx';
+import { IRouter } from './irouter';
+
+export interface IRouteDef {
+  params: {};
+  paramsList: string[];
+  regex: RegExp;
+  dataParams?: {};
+}
 
 export function checkRoute(
   path: string,
-  { regex, paramsList }: Router.IRouteDef): { [idx: string]: string } {
+  { regex, paramsList }: IRouteDef): { [idx: string]: string } {
   regex.lastIndex = 0;
   const data = path.match(regex);
   if (!data) {
@@ -17,13 +25,13 @@ export function checkRoute(
       {});
 }
 
-class RouteDef implements Router.IRouteDef {
-  @observable.ref router: Router.IRouter = null;
+class RouteDef implements IRouteDef {
+  @observable.ref router: IRouter = null;
   @observable path: string = '';
   @observable isExact: boolean = false;
   prevParams: {} = {};
 
-  constructor(router: Router.IRouter, path: string, isExact: boolean = false) {
+  constructor(router: IRouter, path: string, isExact: boolean = false) {
     this.router = router;
     this.path = path;
     this.isExact = isExact;
@@ -65,9 +73,9 @@ class RouteDef implements Router.IRouteDef {
 }
 
 export function parsePath(
-  router: Router.IRouter,
+  router: IRouter,
   path: string,
-  isExact: boolean = false): Router.IRouteDef {
+  isExact: boolean = false): IRouteDef {
   const params = [];
 
   let newPath = path.replace(/:([^/]+)/gi, (_, firstGroup) => {

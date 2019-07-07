@@ -1,15 +1,16 @@
 import * as React from 'react';
 
 import { useObserver } from 'mobx-observer-hook';
-import { parsePath } from './utilities';
+import { parsePath, IRouteDef } from './utilities';
+import { IRouter } from './irouter';
 
 // tslint:disable-next-line: variable-name
-const RouterContext = React.createContext<Router.IRouter>(null);
+const RouterContext = React.createContext<IRouter>(null);
 
 export interface IInnerRouteProps {
-  onEnter?: (router: Router.IRouter) => void;
-  onExit?: (router: Router.IRouter) => void;
-  routeDef?: Router.IRouteDef;
+  onEnter?: (router: IRouter) => void;
+  onExit?: (router: IRouter) => void;
+  routeDef?: IRouteDef;
   params?: any;
   children: React.ReactNode;
 }
@@ -60,7 +61,7 @@ export function Route({ path, onEnter, onExit, isExact, children }: IRouteProps)
 }
 
 export function BrowserRouter({ router, children }: {
-  router: Router.IRouter,
+  router: IRouter,
   children: React.ReactNode,
 }) {
   return <RouterContext.Provider value={router}>{children}</RouterContext.Provider>;

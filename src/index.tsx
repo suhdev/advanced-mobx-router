@@ -32,7 +32,7 @@ export function useRouteParams() {
   return params;
 }
 
-function InnerRoute({ children, onExit, onEnter, params }: IInnerRouteProps) {
+function InnerRoute({ children, onExit, onEnter, routeDef }: IInnerRouteProps) {
   const router = React.useContext(RouterContext);
 
   React.useEffect(
@@ -44,7 +44,10 @@ function InnerRoute({ children, onExit, onEnter, params }: IInnerRouteProps) {
     },
     [router, onEnter, onExit]);
 
-  return <RouteContext.Provider value={params}>{children}</RouteContext.Provider>;
+  return useObserver(
+    () => <RouteContext.Provider value={routeDef.params}>{children}</RouteContext.Provider>, [
+      routeDef
+    ]);
 }
 
 export function Route({ path, onEnter, onExit, isExact, children }: IRouteProps) {
@@ -54,9 +57,10 @@ export function Route({ path, onEnter, onExit, isExact, children }: IRouteProps)
   return useObserver(
     () => routeDef.isActive ? <InnerRoute
       onExit={onExit}
-      params={routeDef.params}
+      routeDef={routeDef}
       onEnter={onEnter}>
-      {children}</InnerRoute> : null,
+      {children}</InnerRoute> : null
+    ,
     [router, routeDef]);
 }
 
